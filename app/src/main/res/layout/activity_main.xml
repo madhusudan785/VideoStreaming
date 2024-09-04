@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/layout_root"
+<LinearLayout android:id="@+id/layout_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_marginTop="16dp"
-    >
+    android:layout_marginTop="16dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/image" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -17,6 +19,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,16 +32,32 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-light"
             android:text="File Name"
+            android:layout_marginTop="25dp"
             android:textSize="24sp" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <FrameLayout
+            android:id="@+id/progress_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:visibility="visible"
-            tools:progress="0" />
+            android:layout_height="50dp"
+            android:background="@drawable/progress_box_border"
+            android:padding="2dp">
+
+            <View
+                android:id="@+id/progress_fill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="#4CAF50" />
+
+            <TextView
+                android:id="@+id/progress_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0%"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/chooseFile"
             android:layout_width="wrap_content"
@@ -94,5 +113,16 @@
         android:padding="10dp"
         app:cornerRadius="8dp"
         />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/listVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="list Page"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        app:cornerRadius="8dp" />
+
 
 </LinearLayout>

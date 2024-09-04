@@ -1,8 +1,7 @@
-package com.example.videoplay
+package com.example.videoplay.Api
 
 import android.os.Handler
 import android.os.Looper
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okio.BufferedSink
@@ -13,8 +12,7 @@ class UploadRequestBody(
     private val file: File,
     private val contentType: String,
     private val callback: UploadCallback
-) : RequestBody()
-{
+) : RequestBody() {
 
     override fun contentType() = "video/mp4".toMediaTypeOrNull()
 

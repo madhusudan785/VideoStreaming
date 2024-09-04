@@ -1,4 +1,4 @@
-package com.example.videoplay
+package com.example.videoplay.utils
 
 import android.content.ContentResolver
 import android.net.Uri
