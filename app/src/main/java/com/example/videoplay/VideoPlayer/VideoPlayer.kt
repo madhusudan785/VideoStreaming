@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.example.videoplay.databinding.ActivityVideoPlayerBinding
@@ -22,6 +23,7 @@ class VideoPlayer : AppCompatActivity() {
     private lateinit var player: ExoPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //fetching videoId

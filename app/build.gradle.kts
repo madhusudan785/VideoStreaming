@@ -63,6 +63,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation ("androidx.activity:activity-ktx:1.8.0")
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
 
 }
+

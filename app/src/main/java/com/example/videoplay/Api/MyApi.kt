@@ -25,8 +25,7 @@ interface MyAPI {
     fun uploadVideo(
         @Part file: MultipartBody.Part,
         @Part("title") title: RequestBody,
-        @Part("description") description: RequestBody,
-        @Part thumbnail: MultipartBody.Part
+        @Part("description") description: RequestBody
     ): Call<UploadResponse>
 //    @GET("api/v1/stream/range/{videoId}")
 //    suspend fun streamVideo(@Path("videoId") videoId: String): Response<ResponseBody>

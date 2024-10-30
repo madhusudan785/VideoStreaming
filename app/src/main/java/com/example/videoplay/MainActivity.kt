@@ -18,7 +18,6 @@ import com.example.videoplay.utils.getFileName
 import com.example.videoplay.utils.snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +37,6 @@ class MainActivity : AppCompatActivity(), UploadRequestBody.UploadCallback {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.chooseFile.setOnClickListener {
             openMediaChooser()
         }
@@ -98,24 +96,10 @@ class MainActivity : AppCompatActivity(), UploadRequestBody.UploadCallback {
         val title = binding.etCustomBox.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         val description = binding.etDescriptionBox.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val thumbnailBitmap = getThumbnailBitmap(selectedFileUri!!)
-        val thumbnailByteArray = thumbnailBitmap?.let { getThumbnailByteArray(it) }
-        val thumbnailFile = File(cacheDir, "thumbnail.jpg")
-        thumbnailByteArray?.let {
-            val fos = FileOutputStream(thumbnailFile)
-            fos.write(it)
-            fos.flush()
-            fos.close()
-        }
 
-        val thumbnailPart = MultipartBody.Part.createFormData(
-            "thumbnail",
-            thumbnailFile.name,
-            thumbnailFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        )
 
         // Upload the video
-        MyAPI().uploadVideo(videoPart, title, description, thumbnailPart)
+        MyAPI().uploadVideo(videoPart, title, description)
             .enqueue(object : Callback<UploadResponse> {
             override fun onResponse(call: Call<UploadResponse>, response: Response<UploadResponse>) {
                 if (response.isSuccessful) {
@@ -129,8 +113,6 @@ class MainActivity : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
                     binding.progressFill.layoutParams.width = 0
                     binding.progressPercentage.text = "0%"
-                    //thumbnailFile clean up
-                    thumbnailFile.delete()
                 } else {
                     binding.layoutRoot.snackbar("Failed to upload video")
                     Log.e("Upload", "Server error: ${response.errorBody()?.string()}")
@@ -148,9 +130,9 @@ class MainActivity : AppCompatActivity(), UploadRequestBody.UploadCallback {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(
             Bitmap.CompressFormat.JPEG,
-            50,
+            100,
             byteArrayOutputStream
-        ) // Compress with quality 70%
+        )
         return byteArrayOutputStream.toByteArray()
     }
 
@@ -161,8 +143,8 @@ class MainActivity : AppCompatActivity(), UploadRequestBody.UploadCallback {
         retriever.release()
 
         // Resize the bitmap
-        val maxWidth = 100 // Max width in pixels
-        val maxHeight = 100 // Max height in pixels
+        val maxWidth = 200 // Max width in pixels
+        val maxHeight = 200 // Max height in pixels
         val width = bitmap?.width ?: 0
         val height = bitmap?.height ?: 0
         val ratio = Math.min(maxWidth.toFloat() / width, maxHeight.toFloat() / height)

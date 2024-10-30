@@ -1,6 +1,9 @@
 package com.example.videoplay
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,20 +17,37 @@ class VideoList : AppCompatActivity() {
     private lateinit var myAdapter: MyAdapter
     private val videoListViewModel: VideoListViewModel by viewModels()
 
+    override fun onResume() {
+        super.onResume()
+        videoListViewModel.fetchAllVideos() // Refresh data each time the activity resumes
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityVideoListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // Set the status bar to be transparent
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setupRecyclerView()
+        binding.floatingActionButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         // Observe the LiveData from the ViewModel
         videoListViewModel.videos.observe(this) { videos ->
-            myAdapter = MyAdapter(this@VideoList, videos)
-            binding.recyclerView.adapter = myAdapter
+            if (::myAdapter.isInitialized) {
+                myAdapter.updateData(videos) // Create an updateData method in MyAdapter
+            } else {
+                myAdapter = MyAdapter(videos)
+                binding.recyclerView.adapter = myAdapter
+            }
         }
 
-        // Optionally, fetch videos explicitly if needed
-        videoListViewModel.fetchAllVideos()
     }
 
     private fun setupRecyclerView() {
